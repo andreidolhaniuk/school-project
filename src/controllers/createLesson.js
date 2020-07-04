@@ -1,5 +1,5 @@
 const createLesson = (req, res) => {
-  res.send({ text: 'lesson was created' });
+  res.status(201).send({ text: 'lesson was created' });
 };
 
 module.exports = createLesson;
