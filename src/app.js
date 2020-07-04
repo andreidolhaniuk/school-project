@@ -11,4 +11,4 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(schoolRouter);
 
-app.listen(process.env.PORT);
+module.exports = app;
