@@ -4,7 +4,6 @@ const lesssonSchema = new mongoose.Schema({
   subject: {
     type: String,
     required: true,
-    unique: true,
   },
   teacher: {
     type: mongoose.Schema.ObjectId,
@@ -19,7 +18,6 @@ const lesssonSchema = new mongoose.Schema({
   class: {
     type: Number,
     required: true,
-    unique: true,
   },
   order: {
     type: Number,
