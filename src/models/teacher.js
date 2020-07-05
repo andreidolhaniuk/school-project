@@ -4,10 +4,12 @@ const teacherSchema = new mongoose.Schema({
   name: {
     type: String,
     require: true,
+    trim: true,
   },
   surname: {
     type: String,
     required: true,
+    trim: true,
   },
 });
 
