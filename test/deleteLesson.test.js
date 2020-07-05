@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../app');
+const app = require('../src/app');
 
 // eslint-disable-next-line no-undef
 describe('Test delete operation', () => {
