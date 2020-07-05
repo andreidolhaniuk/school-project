@@ -4,15 +4,9 @@ const app = require('../src/app');
 const Lesson = require('../src/models/lesson');
 const { LESSSON_DATA } = require('./testData');
 
-const URL = '/create-lesson';
+const { allowedFieldsLesson, allowedFieldsTeacher } = require('../src/utils/allowedFields');
 
-const allowedFields = [
-  'subject',
-  'teacher',
-  'group',
-  'classNumber',
-  'order',
-];
+const URL = '/create-lesson';
 
 // eslint-disable-next-line no-undef
 beforeEach(async () => {
@@ -45,7 +39,15 @@ describe('Test create operation', () => {
   test('Create a lesson. Should return properties that are allowed', async () => {
     const response = await request(app).post(URL).send({ test: 'test' });
     // eslint-disable-next-line no-undef
-    expect(response.body).toMatchObject({ error: `Allowed fields are ${allowedFields.join()}` });
+    expect(response.body).toMatchObject({ error: `Allowed fields are ${allowedFieldsLesson.join()}` });
+  });
+
+  // eslint-disable-next-line no-undef
+  test('Create a lesson. Should return properties that are allowed', async () => {
+    LESSSON_DATA.teacher = { name: 'Test', surnam: 'Incorrect key' };
+    const response = await request(app).post(URL).send(LESSSON_DATA);
+    // eslint-disable-next-line no-undef
+    expect(response.body).toMatchObject({ error: `Allowed fields for teacher are ${allowedFieldsTeacher.join()}` });
   });
 });
 
