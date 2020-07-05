@@ -10,4 +10,18 @@ const teacherSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+// eslint-disable-next-line func-names
+teacherSchema.statics.findOneOrCreate = async function (name, surname) {
+  const Teacher = this;
+  try {
+    const teacher = await Teacher.findOne({ name, surname });
+    if (teacher) {
+      return teacher;
+    }
+    return await new Teacher({ name, surname }).save();
+  } catch {
+    return null;
+  }
+};
 module.exports = mongoose.model('Teacher', teacherSchema);
