@@ -5,10 +5,7 @@
   "main": "src/app.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "test": "jest"
-  },
-  "jest": {
-    "testEnvironment": "node"
+    "test": "jest --config ./jest.config.js --runInBand"
   },
   "repository": {
     "type": "git",
