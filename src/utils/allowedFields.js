@@ -8,7 +8,10 @@ const allowedFieldsLesson = [
 
 const allowedFieldsTeacher = ['name', 'surname'];
 
+const allowedFieldsUser = ['email', 'password'];
+
 module.exports = {
   allowedFieldsTeacher,
   allowedFieldsLesson,
+  allowedFieldsUser,
 };

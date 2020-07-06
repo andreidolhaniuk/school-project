@@ -1,4 +1,5 @@
 const express = require('express');
+const auth = require('../../middleware/auth');
 
 const {
   readLessons,
@@ -9,9 +10,9 @@ const {
 
 const router = express.Router();
 
-router.get('/lessons', readLessons);
-router.post('/create-lesson', createLesson);
-router.put('/update-lesson/:id', updateLesson);
-router.delete('/delete-lesson/:id', deleteLesson);
+router.get('/lessons', auth, readLessons);
+router.post('/create-lesson', auth, createLesson);
+router.put('/update-lesson/:id', auth, updateLesson);
+router.delete('/delete-lesson/:id', auth, deleteLesson);
 
 module.exports = router;
