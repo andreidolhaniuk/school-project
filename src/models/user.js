@@ -3,6 +3,8 @@ const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const { EMAIL_OR_PASSWORD_ERROR } = require('../utils/errors');
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -41,11 +43,11 @@ userSchema.statics.findUser = async function (email, password) {
   const User = this;
   const user = await User.findOne({ email });
   if (!user) {
-    throw new Error('Either your login email or password is incorrect.');
+    throw Error(EMAIL_OR_PASSWORD_ERROR);
   }
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    throw new Error('Either your login email or password is incorrect.');
+    throw new Error(EMAIL_OR_PASSWORD_ERROR);
   }
   return user;
 };

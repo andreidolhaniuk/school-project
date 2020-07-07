@@ -6,6 +6,8 @@ const Group = require('../models/group');
 const { checkAtleastOneFieldPresent } = require('../utils/checkBodyFields');
 
 const { allowedFieldsLesson, allowedFieldsTeacher } = require('../utils/allowedFields');
+const { LESSON_UPDATE_CONFIRMATION } = require('../utils/confirmations');
+const { TEACHER_UPDATE_FIELDS_ERROR, LESSON_UPDATE_FIELDS_ERROR } = require('../utils/errors');
 
 // eslint-disable-next-line consistent-return
 const updateLesson = async (req, res) => {
@@ -16,9 +18,9 @@ const updateLesson = async (req, res) => {
     subject,
     teacher,
     group,
-    classNumber,
     order,
   } = body;
+  const classNumber = body.class;
   if (mongoose.isValidObjectId(id)) {
     if (checkAtleastOneFieldPresent(allowedFieldsLesson, body)) {
       try {
@@ -36,7 +38,7 @@ const updateLesson = async (req, res) => {
                 foundLesson.teacher = teacherDocument._id;
               }
             } else {
-              return res.status(400).send({ text: `Teacher field does not have all needed fields. Allowed fields ${allowedFieldsTeacher.join()}. Extra fields will be ignored` });
+              return res.status(400).send({ text: TEACHER_UPDATE_FIELDS_ERROR });
             }
           }
           if (group) {
@@ -51,7 +53,7 @@ const updateLesson = async (req, res) => {
             foundLesson.order = order;
           }
           await foundLesson.save();
-          res.send({ text: 'lesson was updated' });
+          res.send({ text: LESSON_UPDATE_CONFIRMATION });
         } else {
           res.status(400).send({ text: `Lesson was not found by id ${id}` });
         }
@@ -59,7 +61,7 @@ const updateLesson = async (req, res) => {
         res.status(500).send({ error: e.message });
       }
     } else {
-      res.statuis(400).send({ text: `There is nothing to update. Allowed fields ${allowedFieldsLesson.join()}. Extra fields will be ignored` });
+      res.status(400).send({ error: LESSON_UPDATE_FIELDS_ERROR });
     }
   } else {
     res.status(400).send({ text: `${id} is an invalid id` });

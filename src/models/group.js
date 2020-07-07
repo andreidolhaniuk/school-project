@@ -16,15 +16,12 @@ groupSchema.plugin(uniqueValidator);
 // eslint-disable-next-line func-names
 groupSchema.statics.findOneOrCreate = async function (number) {
   const Group = this;
-  try {
-    const group = await Group.findOne({ number });
-    if (group) {
-      return group;
-    }
-    return await new Group({ number }).save();
-  } catch {
-    return null;
+  let group = await Group.findOne({ number });
+  if (group) {
+    return group;
   }
+  group = await new Group({ number }).save();
+  return group;
 };
 
 module.exports = mongoose.model('Group', groupSchema);

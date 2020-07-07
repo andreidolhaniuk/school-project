@@ -2,7 +2,7 @@ const allowedFieldsLesson = [
   'subject',
   'teacher',
   'group',
-  'classNumber',
+  'class',
   'order',
 ];
 

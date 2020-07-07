@@ -1,6 +1,7 @@
 const { checkAllFieldsPresent } = require('../../utils/checkBodyFields');
 const { allowedFieldsUser } = require('../../utils/allowedFields');
 const User = require('../../models/user');
+const { USER_ALLOWED_FIELDS_ERROR } = require('../../utils/errors');
 
 // eslint-disable-next-line consistent-return
 const logIn = async (req, res) => {
@@ -12,10 +13,10 @@ const logIn = async (req, res) => {
       const token = await user.getToken();
       res.send({ token });
     } catch (e) {
-      res.status(400).send({ error: e.messsage });
+      res.status(400).send({ error: e.message });
     }
   } else {
-    res.send({ error: `Make sure fields ${allowedFieldsUser.join()} are present in request` });
+    res.status(400).send({ error: USER_ALLOWED_FIELDS_ERROR });
   }
 };
 

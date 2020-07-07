@@ -3,6 +3,8 @@ const Teacher = require('../models/teacher');
 const Group = require('../models/group');
 const Lesson = require('../models/lesson');
 const { allowedFieldsLesson, allowedFieldsTeacher } = require('../utils/allowedFields');
+const { LESSON_CREATION_CONFIRMATION } = require('../utils/confirmations');
+const { TEACHER_ALLOWED_FIELDS_ERROR, LESSON_ALLOWED_FIELDS_ERROR } = require('../utils/errors');
 
 // eslint-disable-next-line consistent-return
 const createLesson = async (req, res) => {
@@ -12,9 +14,9 @@ const createLesson = async (req, res) => {
       subject,
       teacher,
       group,
-      classNumber,
       order,
     } = body;
+    const classNumber = body.class;
     if (checkAllFieldsPresent(allowedFieldsTeacher, teacher)) {
       try {
         const teacherDocument = await Teacher.findOneOrCreate(teacher.name, teacher.surname);
@@ -32,12 +34,12 @@ const createLesson = async (req, res) => {
       } catch (e) {
         return res.status(400).send({ error: e.message });
       }
-      res.status(201).send({ text: 'The lesson was created.' });
+      res.status(201).send({ text: LESSON_CREATION_CONFIRMATION });
     } else {
-      res.status(400).send({ error: `Allowed fields for teacher are ${allowedFieldsTeacher.join()}` });
+      res.status(400).send({ error: TEACHER_ALLOWED_FIELDS_ERROR });
     }
   } else {
-    res.status(400).send({ error: `Allowed fields are ${allowedFieldsLesson.join()}` });
+    res.status(400).send({ error: LESSON_ALLOWED_FIELDS_ERROR });
   }
 };
 
