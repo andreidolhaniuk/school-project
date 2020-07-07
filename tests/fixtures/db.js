@@ -10,8 +10,8 @@ const teacher1 = { name: 'John', surname: 'Doe' };
 const teacher2 = { name: 'Test', surname: 'Testovich' };
 const teacher3 = { name: 'John', surname: 'Smith' };
 
-const group1 = { number: 121 };
-const group2 = { number: 111 };
+const group1 = 121;
+const group2 = 111;
 
 const lesson1 = {
   _id: new mongoose.Types.ObjectId(),
@@ -35,7 +35,15 @@ const lesson3 = {
   subject: 'Geometry',
   teacher: teacher3,
   group: 123,
-  classNumber: 204,
+  class: 204,
+  order: 4,
+};
+
+const lessonRepresentationInDB = {
+  subject: 'Geometry',
+  teacher: teacher3,
+  group: { number: 123 },
+  class: 204,
   order: 4,
 };
 
@@ -48,8 +56,13 @@ const user = {
   token: jwt.sign({ _id: userId.toString() }, process.env.SECRET_KEY),
 };
 
-const createLesson = async (lesssonData, groupData, teacherData) => {
-  const group = await Group.create(groupData);
+const newUser = {
+  email: 'test@test.com',
+  password: 'secret',
+};
+
+const createLesson = async (lesssonData, groupNUmber, teacherData) => {
+  const group = await Group.create({ number: groupNUmber });
   const teacher = await Teacher.create(teacherData);
   // eslint-disable-next-line no-underscore-dangle
   const lesson = new Lesson({ ...lesssonData, group: group._id, teacher: teacher._id });
@@ -79,4 +92,8 @@ module.exports = {
   lesson1,
   lesson2,
   lesson3,
+  teacher2,
+  group2,
+  newUser,
+  lessonRepresentationInDB,
 };
