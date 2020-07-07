@@ -40,7 +40,7 @@ describe('Read the lessons.', () => {
 
   // eslint-disable-next-line no-undef
   test('Request body should be an array with provided objects', async () => {
-    const lessons = await Lesson.find().populate('teacher').populate('group');
+    const lessons = await Lesson.find().populate('teacher', '-_id -__v').populate('group', '-_id -__v');
     const response = await request(app)
       .get(URL)
       .set('Authorization', `Bearer ${user.token}`)
@@ -49,15 +49,14 @@ describe('Read the lessons.', () => {
     // eslint-disable-next-line no-undef
     expect(response.body).toMatchObject(
       {
-        lessons: lessons.map((each) => each.toObject(
-          {
-            transform: (doc, ret) => {
-              // eslint-disable-next-line no-param-reassign
-              ret._id = ret._id.toString();
-              return ret;
-            },
+        lessons: lessons.map((each) => each.toObject({
+          transform: (doc, ret) => {
+            // eslint-disable-next-line no-param-reassign
+            if (ret._id) ret._id = ret._id.toString();
+            // eslint-disable-next-line no-param-reassign
+            delete ret.__v;
           },
-        )),
+        })),
       },
     );
   });
