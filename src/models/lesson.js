@@ -34,4 +34,18 @@ const lesssonSchema = new mongoose.Schema({
 
 lesssonSchema.plugin(uniqueValidator);
 
+// eslint-disable-next-line func-names
+lesssonSchema.methods.toJSON = function () {
+  const lesson = this;
+  return lesson.toObject(
+    {
+      transform: (doc, ret) => {
+        // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+        delete ret.__v;
+        return ret;
+      },
+    },
+  );
+};
+
 module.exports = mongoose.model('Lesson', lesssonSchema);
