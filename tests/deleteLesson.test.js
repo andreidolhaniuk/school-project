@@ -1,6 +1,11 @@
+/* eslint-disable no-underscore-dangle */
+/* global test, describe, expect, beforeEach, afterAll */
+
 const request = require('supertest');
 const app = require('../src/app');
 const Lesson = require('../src/models/lesson');
+
+const { TOKEN_ERROR } = require('../src/utils/errors');
 
 const {
   configureDb,
@@ -11,35 +16,34 @@ const {
 
 const URL = '/delete-lesson/';
 
-// eslint-disable-next-line no-undef
 beforeEach(configureDb);
 
-// eslint-disable-next-line no-undef
 describe('Delete a lesson.', () => {
-  // eslint-disable-next-line no-undef
-  test('Should return status code 200', async () => {
-    // eslint-disable-next-line no-underscore-dangle
+  test('Should delete a lesson in database.', async () => {
     const id = lesson1._id;
     const response = await request(app)
       .delete(`${URL}${id}`)
       .set('Authorization', `Bearer ${user.token}`)
       .send();
-    // eslint-disable-next-line no-undef
-    expect(response.statusCode).toBe(200);
-  });
-  // eslint-disable-next-line no-undef
-  test('Should delete a lesson in database', async () => {
-    // eslint-disable-next-line no-underscore-dangle
-    const id = lesson1._id;
-    await request(app)
-      .delete(`${URL}${id}`)
-      .set('Authorization', `Bearer ${user.token}`)
-      .send();
     const foundLesson = await Lesson.findById(id);
-    // eslint-disable-next-line no-undef
+
+    expect(response.statusCode).toBe(200);
     expect(foundLesson).toBeNull();
+  });
+
+  test('Should return an authorization error.', async () => {
+    const id = lesson1._id;
+    const response = await request(app)
+      .delete(`${URL}${id}`)
+      .set('Accept', 'application/json')
+      .send();
+
+    const foundLesson = await Lesson.findById(id);
+
+    expect(foundLesson).not.toBeNull();
+    expect(response.body).toMatchObject({ error: TOKEN_ERROR });
+    expect(response.statusCode).toBe(401);
   });
 });
 
-// eslint-disable-next-line no-undef
 afterAll(closeConnection);
