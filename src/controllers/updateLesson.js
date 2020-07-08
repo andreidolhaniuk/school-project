@@ -17,10 +17,10 @@ const updateLesson = async (req, res) => {
   const {
     subject,
     teacher,
+    class: classNumber,
     group,
     order,
   } = body;
-  const classNumber = body.class;
   if (mongoose.isValidObjectId(id)) {
     if (checkAtleastOneFieldPresent(allowedFieldsLesson, body)) {
       try {

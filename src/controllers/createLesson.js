@@ -13,10 +13,10 @@ const createLesson = async (req, res) => {
     const {
       subject,
       teacher,
+      class: classNumber,
       group,
       order,
     } = body;
-    const classNumber = body.class;
     if (checkAllFieldsPresent(allowedFieldsTeacher, teacher)) {
       try {
         const teacherDocument = await Teacher.findOneOrCreate(teacher.name, teacher.surname);
