@@ -22,14 +22,6 @@ const LOGOUT_URL = '/logout';
 beforeEach(configureDb);
 
 describe('Login a user.', () => {
-  test('Should return status 200.', async () => {
-    const response = await request(app)
-      .post(LOGIN_URL)
-      .set('Accept', 'application/json')
-      .send({ email: user.email, password: user.password });
-    expect(response.statusCode).toBe(200);
-  });
-
   test('Should return status 400 if invalid field is provided.', async () => {
     const response = await request(app)
       .post(LOGIN_URL)
@@ -43,6 +35,7 @@ describe('Login a user.', () => {
       .post(LOGIN_URL)
       .set('Accept', 'application/json')
       .send({});
+    expect(response.statusCode).toBe(400);
     expect(response.body.error).toBe(USER_ALLOWED_FIELDS_ERROR);
   });
 
@@ -61,19 +54,12 @@ describe('Login a user.', () => {
       .set('Accept', 'application/json')
       .send({ email: user.email, password: user.password });
     const userInDB = await User.findOne({ email: user.email });
+    expect(response.statusCode).toBe(200);
     expect(response.body.token).toBe(userInDB.token);
   });
 });
 
 describe('Register a user.', () => {
-  test('Should return status 200', async () => {
-    const response = await request(app)
-      .post(REGISTER_URL)
-      .set('Accept', 'application/json')
-      .send(newUser);
-    expect(response.statusCode).toBe(200);
-  });
-
   test('Should successfully register a user.', async () => {
     const response = await request(app)
       .post(REGISTER_URL)
@@ -81,6 +67,7 @@ describe('Register a user.', () => {
       .send(newUser);
     const userInDB = await User.findOne({ email: newUser.email });
     expect(userInDB).not.toBeNull();
+    expect(response.statusCode).toBe(200);
     expect(response.body.text).toBe(REGISTRATION_CONFIRMATION);
   });
 });
