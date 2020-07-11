@@ -54,7 +54,7 @@ Content-Type: application/json
     "teacher": { "name": "Name", "surname": "Surname"},
     "group": 1,
     "class": 5,
-    "order": 1,
+    "order": 1
 }
 ```
 * Response
@@ -142,7 +142,7 @@ Content-Type: application/json
 }
 ```
 * Responce 
-```
+```json
 {
     "text": "Lesson was updated."
 }
