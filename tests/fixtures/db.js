@@ -61,8 +61,8 @@ const newUser = {
   password: 'secret',
 };
 
-const createLesson = async (lesssonData, groupNUmber, teacherData) => {
-  const group = await Group.create({ number: groupNUmber });
+const createLesson = async (lesssonData, groupNumber, teacherData) => {
+  const group = await Group.create({ number: groupNumber });
   const teacher = await Teacher.create(teacherData);
   // eslint-disable-next-line no-underscore-dangle
   const lesson = new Lesson({ ...lesssonData, group: group._id, teacher: teacher._id });
