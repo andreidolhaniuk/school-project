@@ -117,7 +117,7 @@ DELETE /delete-lesson/<id-of-lesson-to-delete> HTTP/1.1
 Host: localhost:3000
 Authorization: Bearer your-secret-token
 ```
-* Responce
+* Response
 ```json
 {
     "text": "Lesson was deleted."
@@ -141,7 +141,7 @@ Content-Type: application/json
   "order": 6
 }
 ```
-* Responce 
+* Response 
 ```json
 {
     "text": "Lesson was updated."
