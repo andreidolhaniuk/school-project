@@ -130,7 +130,7 @@ Authorization: Bearer your-secret-token
 ```http
 PUT /update-lesson/<id-of-lesson-to-update>  HTTP/1.1
 Host: localhost:3000
-Authorization: Bearer 
+Authorization: Bearer your-secret-token
 Content-Type: application/json
 
 {
